@@ -19,18 +19,15 @@ export default defineComponent({
 <template>
   <Toast class="max-w-[90vw]" />
   <div
-    class="max-h-full h-full grid md:grid-cols-2 md:gap-4 grid-cols-1 grid-rows-auto w-full auto-rows-fr overflow-hidden"
+    class="max-h-full h-full grid gap-2 grid-cols-1 md:grid-cols-2 grid-rows-auto w-full auto-rows-fr overflow-hidden"
   >
-    <div class="p-2">
-      <div class="max-h-full col-span-1 self-center">
+    <div class="h-full col-span-1 self-center p-2 margin-auto">
+      <div class="h-full flex items-center justify-center">
         <ConstructorCanvas />
       </div>
     </div>
-    <div class="col-span-1 flex flex-col">
+    <div class="col-span-1 flex flex-col h-full">
       <TabsPanel />
-      <div class="p-4 h-full overflow-y-auto">
-        <router-view />
-      </div>
     </div>
     <DynamicDialog />
   </div>

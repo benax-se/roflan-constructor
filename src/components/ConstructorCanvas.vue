@@ -1,6 +1,14 @@
 <script lang="ts">
 import Konva from "konva";
-import { onMounted, ref, watchEffect, toRefs, type Ref, computed } from "vue";
+import {
+  onMounted,
+  ref,
+  watchEffect,
+  toRefs,
+  type Ref,
+  computed,
+  nextTick,
+} from "vue";
 import PButton from "primevue/button";
 import { useToast } from "primevue/usetoast";
 import { useCanvasObjects } from "@/stores/canvasObjects";
@@ -502,14 +510,16 @@ export default {
     };
 
     onMounted(() => {
-      const stageEl = stage.value!.$el.parentElement.parentElement;
-      const size = Math.min(stageEl.clientWidth, stageEl.clientHeight);
+      nextTick().then(() => {
+        const stageEl = stage.value!.$el.parentElement.parentElement;
+        const size = Math.min(stageEl.clientWidth, stageEl.clientHeight);
 
-      stageConfig.value = {
-        width: size,
-        height: size,
-        scale: { x: size / DIMENSION, y: size / DIMENSION },
-      };
+        stageConfig.value = {
+          width: size,
+          height: size,
+          scale: { x: size / DIMENSION, y: size / DIMENSION },
+        };
+      });
 
       watchEffect(() => {
         stage.value.getStage().container().style.backgroundColor =
@@ -541,7 +551,7 @@ export default {
 </script>
 
 <template>
-  <div class="relative shadow-lg relative">
+  <div class="relative shadow-xl">
     <v-stage
       class=""
       ref="stage"
@@ -585,7 +595,7 @@ export default {
       class="absolute bottom-2 left-2 p-button-rounded p-button-danger"
       @click="deleteSelectedNodes"
     />
-    <div class="flex gap-4 absolute bottom-2 right-2">
+    <div class="flex gap-4 absolute bottom-1 -right-1">
       <PButton
         icon="pi pi-download"
         class="p-button-rounded"

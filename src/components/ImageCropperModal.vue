@@ -80,7 +80,7 @@ export default {
     modal
     dismissableMask
   >
-    <template #header>{{ t("app.upload.progress") }}</template>
+    <template #header><h3>{{ t("app.upload.progress") }}</h3></template>
     <template #default>
       <div>
         <Cropper
@@ -97,7 +97,7 @@ export default {
       </div>
     </template>
     <template #footer>
-      <div class="flex gap-2">
+      <div class="pt-2 flex justify-end gap-2">
         <FileUpload
           accept="image/*"
           mode="basic"
@@ -106,14 +106,19 @@ export default {
           @uploader="onUploadImage($event as any)"
           :chooseLabel="t('app.browse')"
         />
-        <PButton :label="t('app.confirm')" @click="onSelectImage" />
+        <PButton
+          :label="t('app.confirm')"
+          :disabled="!image"
+          @click="onSelectImage"
+        />
       </div>
     </template>
   </PDialog>
 </template>
 <style lang="scss" scoped>
 .cropper {
-  max-height: 60vh;
+  max-height: 400px;
   background: #ddd;
+  overflow: hidden;
 }
 </style>

@@ -12,7 +12,7 @@ export default {
             prompt: 'Загрузить изображение',
             progress: 'Загрузка изображения'
         },
-        browse: 'Выберите файл',
+        browse: 'Загрузить',
         confirm: 'Подтвердить',
         settings: 'Настройки',
         language: 'Язык',
