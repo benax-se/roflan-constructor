@@ -1,4 +1,6 @@
 @import "./tailwind.css";
+@import "fonts.scss";
+
 
 * {
   box-sizing: border-box;
@@ -7,6 +9,7 @@
 }
 html {
   height: 100vh;
+  font-family: 'Roboto', sans-serif !important;
   margin: 0;
   padding: 0;
 }

@@ -31,7 +31,7 @@ export default {
 </script>
 <template>
   <div class="flex flex-col gap-4">
-    <div class="flex flex-col gap2">
+    <div class="flex flex-col gap-2">
       <span id="language">{{ t("app.language") }}</span>
       <PDropdown
         v-model="locale"
