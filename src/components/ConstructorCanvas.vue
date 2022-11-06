@@ -599,26 +599,3 @@ export default {
     </div>
   </div>
 </template>
-<style>
-.canvas-container {
-  width: 100% !important;
-  height: 100% !important;
-  position: absolute !important;
-}
-
-.textarea {
-  width: 100% !important;
-  height: 100% !important;
-  margin: 0;
-  padding: 20px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border: none;
-  resize: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: medium;
-}
-</style>
