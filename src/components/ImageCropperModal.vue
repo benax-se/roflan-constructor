@@ -58,7 +58,7 @@ export default {
 
     const onSelectImage = () => {
       canvasObjects.setBackgroundImage(croppedImage.value);
-      innerIsOpen.value = false
+      innerIsOpen.value = false;
     };
 
     return {
@@ -74,6 +74,7 @@ export default {
 </script>
 <template>
   <PDialog
+    class="max-w-[90vw]"
     v-model:visible="innerIsOpen"
     :draggable="false"
     modal
@@ -81,17 +82,19 @@ export default {
   >
     <template #header>{{ t("app.upload.progress") }}</template>
     <template #default>
-      <Cropper
-        v-if="image"
-        class="cropper"
-        :auto-zoom="true"
-        :transitions="true"
-        :src="image.src"
-        :stencil-props="{
-          aspectRatio: 1 / 1,
-        }"
-        @change="onCropChange"
-      />
+      <div>
+        <Cropper
+          v-if="image"
+          class="cropper"
+          :auto-zoom="true"
+          :transitions="true"
+          :src="image.src"
+          :stencil-props="{
+            aspectRatio: 1 / 1,
+          }"
+          @change="onCropChange"
+        />
+      </div>
     </template>
     <template #footer>
       <div class="flex gap-2">
@@ -110,7 +113,7 @@ export default {
 </template>
 <style lang="scss" scoped>
 .cropper {
-  max-height: 400px;
+  max-height: 60vh;
   background: #ddd;
 }
 </style>
