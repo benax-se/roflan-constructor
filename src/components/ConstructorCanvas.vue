@@ -483,7 +483,6 @@ export default {
               severity: "success",
               summary: t("app.success"),
               detail: t("app.share.copied"),
-              life: 3000,
             });
           })
           .catch(() =>

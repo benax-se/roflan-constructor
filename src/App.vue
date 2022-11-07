@@ -32,3 +32,11 @@ export default defineComponent({
     <DynamicDialog />
   </div>
 </template>
+<style lang="scss">
+.p-toast-message {
+  @apply rounded;
+}
+.p-toast-message-content {
+  @apply border-none;
+}
+</style>
