@@ -44,15 +44,15 @@ export default {
     <div class="flex gap-3">
       <PButton
         @click="setDefaultColor(defaultColors.red)"
-        class="w-14 h-14 bg-[#e40004] border-[#e40004]"
+        class="red w-14 h-14"
       />
       <PButton
         @click="setDefaultColor(defaultColors.yellow)"
-        class="w-14 h-14 bg-[#fabf05] border-[#fabf05] aspect-square"
+        class="yellow w-14 h-14 bg-[#fabf05]"
       />
       <PButton
         @click="setDefaultColor(defaultColors.green)"
-        class="w-14 h-14 bg-[#2ea32c] border-[#2ea32c] aspect-square"
+        class="green w-14 h-14"
       />
     </div>
     <ColorPicker
@@ -63,3 +63,19 @@ export default {
     />
   </div>
 </template>
+<style scoped lang="scss">
+::v-deep(.red) {
+  background-color: #e40004;
+  border-color: #e40004
+} 
+
+::v-deep(.yellow) {
+  background-color: #fabf05;
+  border-color: #fabf05;
+} 
+
+::v-deep(.green) {
+  background-color: #2ea32c;
+  border-color: #2ea32c;
+} 
+</style>
