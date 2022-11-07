@@ -25,7 +25,7 @@ export const useCanvasObjects = defineStore('canvasObjects', () => {
     backgroundImage.value = imgUrl
   }
 
-  const fillColor = ref(FILL_COLORS.yellow)
+  const fillColor = ref<string>(FILL_COLORS.yellow)
   const setFillColor = (color: string) => {
     fillColor.value = color
   }
