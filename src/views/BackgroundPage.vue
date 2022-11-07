@@ -111,17 +111,19 @@ export default {
       />
     </div>
     <div v-else-if="selectedOption === 'picture'">
-      <PButton
-      class="mb-4 w-full"
-        icon="pi pi-upload"
-        :label="t('app.upload.prompt')"
-        @click="handleUploadImage"
-      ></PButton>
-      <PreviewGrid
-        :images="allBackgrounds"
-        :selected-image="selectedBackgroundImage"
-        @select="handleSelectBackgroundImage"
-      />
+      <div class="flex flex-col gap-4">
+        <PButton
+          class="w-full"
+          icon="pi pi-upload"
+          :label="t('app.upload.prompt')"
+          @click="handleUploadImage"
+        ></PButton>
+        <PreviewGrid
+          :images="allBackgrounds"
+          :selected-image="selectedBackgroundImage"
+          @select="handleSelectBackgroundImage"
+        />
+      </div>
       <ImageCropperModal v-model:is-open="isUploadModalOpen" />
     </div>
   </div>
