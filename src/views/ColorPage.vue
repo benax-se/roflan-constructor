@@ -65,17 +65,17 @@ export default {
 </template>
 <style scoped lang="scss">
 ::v-deep(.red) {
-  background-color: #e40004;
-  border-color: #e40004
+  background-color: #e40004 !important;
+  border-color: #e40004 !important;
 } 
 
 ::v-deep(.yellow) {
-  background-color: #fabf05;
-  border-color: #fabf05;
+  background-color: #fabf05 !important;
+  border-color: #fabf05 !important;
 } 
 
 ::v-deep(.green) {
-  background-color: #2ea32c;
-  border-color: #2ea32c;
+  background-color: #2ea32c !important;
+  border-color: #2ea32c !important;
 } 
 </style>
