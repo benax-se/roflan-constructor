@@ -340,6 +340,22 @@ const useTransformation = (
   };
 };
 
+const useBackgroundColorRect = (backgroundColor: Ref<string>) => {
+  const backgroundColorRectConfig = computed(() => {
+    return {
+      x: 0,
+      y: 0,
+      width: DIMENSION,
+      height: DIMENSION,
+      fill: backgroundColor.value,
+    };
+  });
+
+  return {
+    backgroundColorRectConfig,
+  };
+};
+
 const useBackgroundImage = (
   stageConfig: Ref<StageConfig>,
   backgroundImageUrl: Ref<string | null>
@@ -451,6 +467,8 @@ export default {
       stageConfig,
       backgroundImage
     );
+    const { backgroundColorRectConfig } =
+      useBackgroundColorRect(backgroundColor);
     const { eyesConfig } = useEye(stageConfig, eyesImg);
     const { mouthConfig } = useMouth(stageConfig, mouthImg);
     const { accessoriesConfigs, addAccessory } = useAccessories(stageConfig);
@@ -520,15 +538,16 @@ export default {
         };
       });
 
-      watchEffect(() => {
-        stage.value.getStage().container().style.backgroundColor =
-          backgroundColor.value;
-      });
+      // watchEffect(() => {
+      //   stage.value.getStage().container().style.backgroundColor =
+      //     backgroundColor.value;
+      // });
     });
 
     return {
       stage,
       stageConfig,
+      backgroundColorRectConfig,
       backgroundImageConfig,
       strokeConfig,
       eyesConfig,
@@ -564,6 +583,9 @@ export default {
       @click="handleStageClick"
       @tap="handleStageClick"
     >
+      <v-layer>
+        <v-rect :config="backgroundColorRectConfig" />
+      </v-layer>
       <v-layer>
         <v-image v-if="backgroundImageConfig" :config="backgroundImageConfig" />
       </v-layer>
