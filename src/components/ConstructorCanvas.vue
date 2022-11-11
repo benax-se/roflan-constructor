@@ -112,10 +112,12 @@ const useStrokeConfig = (
   fillColor: Ref<string>
 ) => {
   const stroke = computed(
-    () => strokes[strokeImgUrl.value.split("/").pop()!.replace(".png", "")]
+    () => strokes[strokeImgUrl.value.split("/").pop()!.split('.')[0].replace(".png", "")]
   );
 
   const strokeConfig = computed(() => {
+    console.log(stroke)
+    console.log(strokeImgUrl)
     const { width: strokeWidth, height: strokeHeight, lineWidth } = stroke.value;
     const {
       width: stageWidth,
