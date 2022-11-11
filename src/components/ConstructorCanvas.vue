@@ -9,6 +9,7 @@ import {
   computed,
   nextTick,
 } from "vue";
+import strokes from "@/assets/strokes/paths";
 import PButton from "primevue/button";
 import { useToast } from "primevue/usetoast";
 import { useCanvasObjects } from "@/stores/canvasObjects";
@@ -66,7 +67,7 @@ type SelectionRectangle =
 const DIMENSION = 1100;
 
 const useEye = (stageConfig: Ref<StageConfig>, eyeImgUrl: Ref<string>) => {
-  const EYES_CENTER_X = 330;
+  const EYES_CENTER_X = 300;
   const EYES_CENTER_Y = 240;
 
   const eyesConfig = ref<EyesConfig | null>(null);
@@ -105,9 +106,50 @@ const useEye = (stageConfig: Ref<StageConfig>, eyeImgUrl: Ref<string>) => {
   };
 };
 
+const useStrokeConfig = (
+  stageConfig: Ref<StageConfig>,
+  strokeImgUrl: Ref<string>,
+  fillColor: Ref<string>
+) => {
+  const stroke = computed(
+    () => strokes[strokeImgUrl.value.split("/").pop()!.replace(".png", "")]
+  );
+
+  const strokeConfig = computed(() => {
+    const { width: strokeWidth, height: strokeHeight, lineWidth } = stroke.value;
+    const {
+      width: stageWidth,
+      height: stageHeight,
+      scale: stageScale,
+    } = stageConfig.value;
+
+    const scaleXFactor = stageWidth / strokeWidth;
+    const scaleYFactor = stageHeight / strokeHeight;
+    const scaleFactor = Math.max(scaleXFactor, scaleYFactor);
+
+    const scaleX = scaleFactor * 0.65 / stageScale.x
+    const scaleY = scaleFactor * 0.65 / stageScale.y
+    return {
+      x: DIMENSION / 2 - strokeWidth* scaleX / 2,
+      y: DIMENSION / 2 - strokeHeight * scaleY / 2,
+      data: stroke.value.data,
+      stroke: "#3D290E",
+      strokeWidth: lineWidth,
+      fill: fillColor.value,
+      fillRule: "evenodd",
+      scaleX: scaleX,
+      scaleY: scaleY,
+    };
+  });
+
+  return {
+    strokeConfig,
+  };
+};
+
 const useMouth = (stageConfig: Ref<StageConfig>, mouthImgUrl: Ref<string>) => {
-  const MOUTH_CENTER_X = 330;
-  const MOUTH_CENTER_Y = 500;
+  const MOUTH_DEFAULT_CENTER_X = 600;
+  const MOUTH_DEFAULT_CENTER_Y = 725;
 
   const mouthConfig = ref<MouthConfig | null>(null);
 
@@ -123,12 +165,15 @@ const useMouth = (stageConfig: Ref<StageConfig>, mouthImgUrl: Ref<string>) => {
       } = stageConfig.value;
       const scaleXFactor = stageWidth / mouthImg.naturalWidth;
       const scaleYFactor = stageHeight / mouthImg.naturalHeight;
-      const scaleFactor = (scaleXFactor + scaleYFactor) / 2;
+      const scaleFactor = Math.min(scaleXFactor, scaleYFactor);
+
+      const mouthCenterX = MOUTH_DEFAULT_CENTER_X - mouthImg.naturalWidth / 2;
+      const mouthCenterY = MOUTH_DEFAULT_CENTER_Y - mouthImg.naturalHeight / 2;
 
       mouthConfig.value = {
         name: "mouth",
-        x: MOUTH_CENTER_X,
-        y: MOUTH_CENTER_Y,
+        x: mouthCenterX,
+        y: mouthCenterY,
         scaleX: (scaleFactor * 0.4) / stageScale.x,
         scaleY: (scaleFactor * 0.4) / stageScale.y,
         image: mouthImg,
@@ -424,8 +469,14 @@ export default {
     const { t } = useI18n();
 
     const canvasStore = useCanvasObjects();
-    const { backgroundImage, backgroundColor, fillColor, eyesImg, mouthImg } =
-      toRefs(canvasStore);
+    const {
+      backgroundImage,
+      backgroundColor,
+      fillColor,
+      eyesImg,
+      mouthImg,
+      strokeImg,
+    } = toRefs(canvasStore);
 
     const stage = ref<any>(null);
     const stageConfig = ref<StageConfig>({
@@ -452,16 +503,7 @@ export default {
       () => selectedAccessoryNodes.value.length > 0
     );
 
-    const strokeConfig = computed(() => ({
-      x: 250,
-      y: 175,
-      data: "M137.412 41.3783L137.413 41.3784C137.758 41.592 138.198 41.6842 138.583 41.4517C138.957 41.2254 139.094 40.8009 139.094 40.3971L139.094 40.3963C139.093 40.3829 139.079 40.2248 139.698 39.7847C140.315 39.347 141.421 38.7232 143.373 37.7445C147.263 35.793 154.4 32.4847 167.388 26.5134C187.497 17.2675 205.075 11.574 226.19 7.46687C236.734 5.41634 267.105 1.89731 282.125 0.988153C288.722 0.589284 296.573 0.395984 299.568 0.556351C302.596 0.718551 311.017 1.08867 318.281 1.37867C347.159 2.53235 393.208 11.9063 426.431 23.4016C462.542 35.8959 494.946 58.737 531.577 97.5662C582.207 151.236 606.046 182.591 617.602 210.616C628.774 237.711 635.278 263.045 639.25 294.965C640.173 302.379 640.563 316.373 640.461 330.52C640.36 344.666 639.766 358.915 638.732 366.838C636.819 381.497 632.118 405.547 629.27 415.262C628.22 418.84 624.186 433.018 620.304 446.767C599.079 521.947 581.7 569.286 557.8 617.036C537.272 658.05 529.113 670.332 502.863 699.754C486.763 717.8 477.195 726.554 467.693 731.991C449.377 742.471 430.607 747.694 394.229 752.385C387.307 753.278 368.4 753.809 348.76 753.912C329.129 754.016 308.829 753.692 299.136 752.885C269.422 750.41 258.935 748.296 231.25 739.203C202.491 729.757 190.646 724.936 166.63 712.907C118.409 688.754 85.6182 654.51 58.2507 599.68C26.8269 536.723 8.77222 471.073 1.92731 394.858C0.291588 376.639 0.149488 346.709 1.05605 318.862C1.50924 304.941 2.22423 291.549 3.14459 280.411C4.06596 269.26 5.19064 260.402 6.45528 255.529C7.81447 250.291 10.8035 237.007 13.0988 226.005C15.3928 215.01 18.7502 201.532 20.5552 196.06C24.6607 183.611 39.4747 148.273 45.8882 135.629L45.4423 135.403L45.8882 135.629C60.4696 106.88 79.4347 82.9666 102.1 64.7357C107.093 60.7195 113.286 56.1132 118.23 52.6386C120.703 50.9008 122.857 49.4505 124.389 48.4998C125.158 48.0224 125.756 47.6801 126.154 47.4895C126.235 47.4512 126.301 47.4217 126.355 47.3995C126.392 47.4231 126.431 47.4419 126.471 47.4559C126.659 47.523 126.835 47.4756 126.911 47.4523C127.094 47.396 127.303 47.2749 127.504 47.141C127.925 46.8603 128.484 46.4036 129.086 45.8429L128.745 45.4771L129.086 45.8429C129.649 45.3185 130.243 44.9065 130.736 44.6635C130.983 44.5413 131.188 44.4707 131.338 44.4429C131.44 44.424 131.487 44.4301 131.498 44.4317C131.858 44.6475 132.306 44.6878 132.664 44.3921C132.981 44.1299 133.094 43.7044 133.094 43.2951C133.094 43.2653 133.095 43.2374 133.096 43.2113C133.251 43.287 133.417 43.3141 133.57 43.3138C133.803 43.3134 134.043 43.2512 134.268 43.16C134.72 42.9767 135.21 42.6377 135.648 42.1996C136.005 41.8429 136.414 41.5832 136.772 41.4488C137.162 41.3026 137.363 41.3476 137.412 41.3783ZM126.534 47.3398C126.533 47.34 126.53 47.3406 126.525 47.3411C126.531 47.3398 126.534 47.3395 126.534 47.3398ZM132.594 43.2951C132.594 43.9691 132.212 44.2851 131.745 43.9971L137.675 40.9531C137.169 40.6401 136.098 41.0421 135.294 41.8461C134.49 42.6501 133.554 43.0291 133.213 42.6891C132.873 42.3481 132.594 42.6211 132.594 43.2951Z",
-      stroke: "#3D290E",
-      strokeWidth: 11,
-      fill: fillColor.value,
-      width: 12,
-      height: 8,
-    }));
+    const { strokeConfig } = useStrokeConfig(stageConfig, strokeImg, fillColor);
 
     const { backgroundImageConfig } = useBackgroundImage(
       stageConfig,
@@ -537,11 +579,6 @@ export default {
           scale: { x: size / DIMENSION, y: size / DIMENSION },
         };
       });
-
-      // watchEffect(() => {
-      //   stage.value.getStage().container().style.backgroundColor =
-      //     backgroundColor.value;
-      // });
     });
 
     return {

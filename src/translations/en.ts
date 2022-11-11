@@ -21,6 +21,7 @@ export default {
         share: {
             unable: 'Unable to share',
             copied: 'Copied to clipboard'
-        }
+        },
+        stroke: 'Stroke'
     }
 }

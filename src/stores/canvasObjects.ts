@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import defaultEyesImg from '../assets/eyes/000.png'
 import defaultMouthImg from '../assets/mouths/000.png'
+import defaultStrokeImg from '../assets/strokes/previews/000.png'
 import { FILL_COLORS } from '@/constants/colors'
 
 export const useCanvasObjects = defineStore('canvasObjects', () => {
@@ -13,6 +14,11 @@ export const useCanvasObjects = defineStore('canvasObjects', () => {
   const mouthImg = ref(defaultMouthImg)
   const setMouthImg = (imgUrl: string) => {
     mouthImg.value = imgUrl
+  }
+
+  const strokeImg = ref(defaultStrokeImg)
+  const setStrokeImg = (imgUrl: string) => {
+    strokeImg.value = imgUrl
   }
 
   const backgroundColor = ref<string>('transparent')
@@ -35,6 +41,8 @@ export const useCanvasObjects = defineStore('canvasObjects', () => {
     setEyesImg,
     mouthImg,
     setMouthImg,
+    strokeImg,
+    setStrokeImg,
     fillColor,
     setFillColor,
     backgroundColor,

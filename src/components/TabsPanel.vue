@@ -8,6 +8,7 @@ import ColorPage from "@/views/ColorPage.vue";
 import AccessoriesPage from "@/views/AccessoriesPage.vue";
 import BackgroundPage from "@/views/BackgroundPage.vue";
 import SettingsPage from "@/views/SettingsPage.vue";
+import StrokesPage from "@/views/StrokesPage.vue";
 
 export default {
   name: "TabsPanel",
@@ -19,12 +20,18 @@ export default {
     AccessoriesPage,
     BackgroundPage,
     SettingsPage,
+    StrokesPage,
   },
   setup() {
     const { t } = useI18n();
 
     const active = ref(0);
     const tabs = computed(() => [
+      {
+        label: t("app.stroke"),
+        icon: "pi pi-user",
+        component: "StrokesPage",
+      },
       {
         label: t("app.eyes"),
         icon: "pi pi-eye",
