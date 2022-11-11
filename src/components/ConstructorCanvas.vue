@@ -112,13 +112,20 @@ const useStrokeConfig = (
   fillColor: Ref<string>
 ) => {
   const stroke = computed(
-    () => strokes[strokeImgUrl.value.split("/").pop()!.split('.')[0].replace(".png", "")]
+    () =>
+      strokes[
+        strokeImgUrl.value.split("/").pop()!.split(".")[0].replace(".png", "")
+      ]
   );
 
   const strokeConfig = computed(() => {
-    console.log(stroke)
-    console.log(strokeImgUrl)
-    const { width: strokeWidth, height: strokeHeight, lineWidth } = stroke.value;
+    console.log(stroke);
+    console.log(strokeImgUrl);
+    const {
+      width: strokeWidth,
+      height: strokeHeight,
+      lineWidth,
+    } = stroke.value;
     const {
       width: stageWidth,
       height: stageHeight,
@@ -129,11 +136,11 @@ const useStrokeConfig = (
     const scaleYFactor = stageHeight / strokeHeight;
     const scaleFactor = Math.max(scaleXFactor, scaleYFactor);
 
-    const scaleX = scaleFactor * 0.65 / stageScale.x
-    const scaleY = scaleFactor * 0.65 / stageScale.y
+    const scaleX = (scaleFactor * 0.65) / stageScale.x;
+    const scaleY = (scaleFactor * 0.65) / stageScale.y;
     return {
-      x: DIMENSION / 2 - strokeWidth* scaleX / 2,
-      y: DIMENSION / 2 - strokeHeight * scaleY / 2,
+      x: DIMENSION / 2 - (strokeWidth * scaleX) / 2,
+      y: DIMENSION / 2 - (strokeHeight * scaleY) / 2,
       data: stroke.value.data,
       stroke: "#3D290E",
       strokeWidth: lineWidth,
@@ -649,12 +656,14 @@ export default {
         <v-transformer ref="transformer" />
       </v-layer>
     </v-stage>
-    <PButton
-      v-if="hasItemsToDelete"
-      icon="pi pi-trash"
-      class="absolute bottom-2 left-2 p-button-rounded p-button-danger"
-      @click="deleteSelectedNodes"
-    />
+    <div class="absolute bottom-2 left-2">
+      <PButton
+        v-if="hasItemsToDelete"
+        icon="pi pi-trash"
+        class="p-button-rounded p-button-danger"
+        @click="deleteSelectedNodes"
+      />
+    </div>
     <div class="flex gap-4 absolute bottom-1 -right-1">
       <PButton
         icon="pi pi-download"
