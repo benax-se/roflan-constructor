@@ -81,7 +81,9 @@ export default {
       <TabMenu v-model:active-index="active" :model="tabs" />
     </div>
     <div class="p-4 h-full overflow-y-auto">
-      <component :is="activeComponent" />
+      <KeepAlive>
+        <component :is="activeComponent" />
+      </KeepAlive>
     </div>
   </div>
 </template>
